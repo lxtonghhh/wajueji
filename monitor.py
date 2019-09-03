@@ -5,7 +5,7 @@ from sender import send_message
 from fetchers.TechIndex import scan
 from utils import time_to_str
 
-REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "18", "20", "22"]
+REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "18", "19", "20", "22"]
 
 
 # REPORT_TIME = [str(x) for x in range(60)]

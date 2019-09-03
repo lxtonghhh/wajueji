@@ -258,7 +258,6 @@ def Share_prepare(self):
 def Share_work(self):
     # print("Make a request Share", URL + self.cur_share + "-technical")
     r = requests.get(url=URL + self.cur_share + "-technical", headers=HEADERS, timeout=5)
-
     if r.status_code != 200:
         raise Exception
     else:
@@ -371,4 +370,4 @@ def scan(is_test):
 
 if __name__ == "__main__":
     # test_meta()
-    print(scan())
+    print(scan(is_test=False))
