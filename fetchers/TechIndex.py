@@ -362,13 +362,11 @@ def scan(is_test):
     n = newFetcher()
     print(n.name, n.uuid, "Start to fetch")
     if is_test:
-        res = n.run()
-    else:
         res = n.run_test()
+    else:
+        res = n.run()
     print(n.name, n.uuid, "Finish fetching:", res)
     return res
-
-
 
 
 if __name__ == "__main__":
