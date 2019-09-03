@@ -5,7 +5,7 @@ from sender import send_message
 from fetchers.TechIndex import scan
 from utils import time_to_str
 
-REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "20", "22"]
+REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "18","20", "22"]
 
 
 # REPORT_TIME = [str(x) for x in range(60)]
@@ -43,6 +43,7 @@ class Monitor(object):
             self.time_to_check = doc['value']
 
     def restart(self):
+        print("Monitor is Restarting")
         self._init_check_time_from_db()
         self.conn = MongoConn(config=MONGODB_CONFIG)
         self.prepare()
@@ -68,6 +69,7 @@ class Monitor(object):
         res = scan()
         info = dict(datetime=time_to_str(datetime.now()), content=res)
         info_str = time_to_str(datetime.now()) + "\n" + "\n".join(res)
+        print("Monitor 完成扫描", info_str)
         return info_str
 
     def report(self):

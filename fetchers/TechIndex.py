@@ -221,10 +221,10 @@ ALL_BELOW_21_15 = ['yifan-xinfu-a', 'cashway-tech', 'huajin-chemical-a', 'shanxi
 GUOFANG_BELOW_21 = ['avic-electro-a', 'avic-aircraft-a', 'north-navigati', 'hongdu-avia', 'aero-engine-ctrl-a',
                     'chengfa-tech', 'cn-avic-avioni', 'boyun-new-mat-a', 'beijing-cisri-gaona-materials-tech',
                     'beijing-andawell-a', 'ligeance-mineral-a', 'electro-optic', 'up-optotech-a']
-SHARE_URL_LIST = ALL_BELOW_21_15 + ALL_BELOW_21_14 + ALL_BELOW_21_13 + ALL_BELOW_21_12 + ALL_BELOW_21_11 + \
-                 ALL_BELOW_21_10 + ALL_BELOW_21_9 + ALL_BELOW_21_8 + ALL_BELOW_21_7 + ALL_BELOW_21_6 + ALL_BELOW_21_5 + ALL_BELOW_21_4 + \
-                 ALL_BELOW_21_3 + ALL_BELOW_21_2 + ALL_BELOW_21_1
-
+SHARE_URL_LIST2 = ALL_BELOW_21_15 + ALL_BELOW_21_14 + ALL_BELOW_21_13 + ALL_BELOW_21_12 + ALL_BELOW_21_11 + \
+                  ALL_BELOW_21_10 + ALL_BELOW_21_9 + ALL_BELOW_21_8 + ALL_BELOW_21_7 + ALL_BELOW_21_6 + ALL_BELOW_21_5 + ALL_BELOW_21_4 + \
+                  ALL_BELOW_21_3 + ALL_BELOW_21_2 + ALL_BELOW_21_1
+SHARE_URL_LIST = ALL_BELOW_21_14
 URL = "https://cn.investing.com/equities/"
 TICK = 0.1
 PLACE = {"上海": "sh", "深圳": "sz"}
@@ -360,8 +360,9 @@ def test_meta():
 def scan():
     newFetcher = create_new_fetcher("ShareFetcher", Share_prepare, Share_work, Share_exception)
     n = newFetcher()
-    print(n.name, n.uuid)
+    print(n.name, n.uuid, "Start to fetch")
     res = n.run()
+    print(n.name, n.uuid, "Finish fetching:", res)
     return res
 
 
