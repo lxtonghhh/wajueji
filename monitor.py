@@ -1,23 +1,14 @@
-"""
-后台监控
-db
-report_info_coll
-date->str
-time->str
-datetime->datetime
-info->str
-
-system_var_coll
-key->str
-value->
-"""
 from mongo import MongoConn, MONGODB_CONFIG
 from datetime import datetime
 import time
 from sender import send_message
+from fetchers.TechIndex import scan
+from utils import time_to_str
 
-REPORT_TIME = ["0", "8", "16"]
-#REPORT_TIME = [str(x) for x in range(60)]
+REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "20", "22"]
+
+
+# REPORT_TIME = [str(x) for x in range(60)]
 
 
 def p(string):
@@ -37,8 +28,17 @@ class Monitor(object):
         coll = conn.get_coll("system_var_coll")
         doc = coll.find_one(filter=dict(key="report_check_time"))
         if not doc:
-            self.time_to_check = REPORT_TIME[0]
-            coll.insert(dict(key="report_check_time", value=REPORT_TIME[0]))
+            # 寻找最近将来时间点 默认有序
+            _now_hour = datetime.now().hour
+            for h in REPORT_TIME:
+                if _now_hour - int(h) > 0:
+                    continue
+                else:
+                    self.time_to_check = h
+                    break
+            if not self.time_to_check:
+                self.time_to_check = REPORT_TIME[0]
+            coll.insert(dict(key="report_check_time", value=self.time_to_check))
         else:
             self.time_to_check = doc['value']
 
@@ -65,9 +65,10 @@ class Monitor(object):
             time.sleep(1)
 
     def get_info(self):
-        info = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(info)
-        return info
+        res = scan()
+        info = dict(datetime=time_to_str(datetime.now()), content=res)
+        info_str = time_to_str(datetime.now()) + "\n" + "\n".join(res)
+        return info_str
 
     def report(self):
         def _check_need(time):

@@ -9,7 +9,7 @@ MONGODB_CONFIG = {
     'port': 27017,
     'username': None,
     'password': None,
-    'dbname': 'wajueji'
+    'dbname': 'share'
 }
 
 

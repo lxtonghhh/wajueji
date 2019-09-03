@@ -44,7 +44,7 @@ def load_content(raw_content, filename=None):
             c = f.read()
             # 设置html格式参数
             content = MIMEText(c, 'html', 'utf-8')
-    print(content)
+    #print(content)
     return content
 
 
@@ -76,7 +76,7 @@ def add_attachment(massage, filename):
 def send_message(subject, content, content_file=None, attachments=[]):
     # 登录并发送邮件
     sender = 'liuzeduo1234@163.com'
-    receivers = ['liuzeduo1234@163.com','476612971@qq.com']
+    receivers = ['liuzeduo1234@163.com']
     try:
         smtpObj = smtplib.SMTP()
         # 连接到服务器
