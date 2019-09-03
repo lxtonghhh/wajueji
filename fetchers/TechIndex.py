@@ -226,7 +226,7 @@ SHARE_URL_LIST = ALL_BELOW_21_15 + ALL_BELOW_21_14 + ALL_BELOW_21_13 + ALL_BELOW
                   ALL_BELOW_21_3 + ALL_BELOW_21_2 + ALL_BELOW_21_1
 SHARE_URL_LIST2 = ALL_BELOW_21_14
 URL = "https://cn.investing.com/equities/"
-TICK = 0.1
+TICK = 1
 PLACE = {"上海": "sh", "深圳": "sz"}
 
 

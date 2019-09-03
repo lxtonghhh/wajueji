@@ -88,18 +88,25 @@ class Monitor(object):
             else:
                 new_time = REPORT_TIME[i + 1]
             self.time_to_check = new_time
-            coll = self.conn.get_coll("system_var_coll")
+
+            conn = MongoConn(config=MONGODB_CONFIG)
+            coll = conn.get_coll("system_var_coll")
             coll.update({"key": "report_check_time"}, {"$set": {"value": new_time}})
             print("更新", new_time)
 
-        coll = self.conn.get_coll("report_info_coll")
+
         _date = datetime.now().strftime("%Y-%m-%d")
         _time = datetime.now().strftime("%H:%M:%S")
         if _check_need(_time):
             _update_check_time()
             info = self.get_info()
-            coll.insert(dict(date=_date, time=_time, datetime=datetime.now(), info=info))
+            print("准备报告")
             send_message(subject="系统状态报告", content=info, attachments=[])
+            print("准备写入")
+            conn = MongoConn(config=MONGODB_CONFIG)
+            coll = conn.get_coll("report_info_coll")
+            coll.insert(dict(date=_date, time=_time, datetime=datetime.now(), info=info))
+
         else:
             print("不需要更新", _time)
             pass
