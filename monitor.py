@@ -1,11 +1,11 @@
 from mongo import MongoConn, MONGODB_CONFIG
 from datetime import datetime
-import time
+import time, sys
 from sender import send_message
 from fetchers.TechIndex import scan
 from utils import time_to_str
 
-REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "18","20", "22"]
+REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "18", "20", "22"]
 
 
 # REPORT_TIME = [str(x) for x in range(60)]
@@ -62,17 +62,17 @@ class Monitor(object):
 
     def run_test(self):
         while True:
-            self.report()
+            self.report(is_test=True)
             time.sleep(1)
 
-    def get_info(self):
-        res = scan()
+    def get_info(self, is_test):
+        res = scan(is_test)
         info = dict(datetime=time_to_str(datetime.now()), content=res)
         info_str = time_to_str(datetime.now()) + "\n" + "\n".join(res)
         print("Monitor 完成扫描", info_str)
         return info_str
 
-    def report(self):
+    def report(self, is_test=False):
         def _check_need(time):
             _time = str(int(time.split(":")[0]))
             print(_time, self.time_to_check)
@@ -94,12 +94,12 @@ class Monitor(object):
             coll.update({"key": "report_check_time"}, {"$set": {"value": new_time}})
             print("更新", new_time)
 
-
         _date = datetime.now().strftime("%Y-%m-%d")
         _time = datetime.now().strftime("%H:%M:%S")
         if _check_need(_time):
             _update_check_time()
-            info = self.get_info()
+            info = self.get_info(is_test)
+
             print("准备报告")
             send_message(subject="系统状态报告", content=info, attachments=[])
             print("准备写入")
@@ -117,5 +117,13 @@ def main():
     m.run()
 
 
+def main_test():
+    m = Monitor()
+    m.run_test()
+
+
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "t":
+        main_test()
+    else:
+        main()

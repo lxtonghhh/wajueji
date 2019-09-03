@@ -46,7 +46,7 @@ class Fetcher(object):
                 self._beat()
             except ExitSignal:
                 print("Fetcher {0} {1} is Exiting".format(self.name, self.uuid))
-                exit(1)
+                return self.result
 
     def work(self):
         pass
