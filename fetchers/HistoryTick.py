@@ -140,11 +140,16 @@ def scan_tick_data(output=None, is_test=False, is_all=False, params=None, is_sav
             [(share3_open_tick1, high1, low1, close1),(share3_open_tick2, high2, low2, close2),...],
             ]
     """
+    data = dict()
+    data["info"] = dict(size=PARAMS_IN_USE["MA"], start=None, end=None, map=name_code_map)
+    data["content"] = res
+    if is_save:
+        # 存入数据库
+        conn = MongoConn(config=MONGODB_CONFIG)
+        coll = conn.get_coll("share_tick_coll")
+        coll.insert(data)
 
     with open(ROOT_DIR + "app/output.json", "w", encoding="utf-8") as f:
-        data = dict()
-        data["info"] = dict(size=PARAMS_IN_USE["MA"], start=None, end=None, map=name_code_map)
-        data["content"] = res
         json.dump(data, f)
 
     if output:

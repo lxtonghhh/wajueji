@@ -8,7 +8,7 @@ if __name__ == "__main__":
     args = get_args()
 
     if len(args) == 0:
-        send_message(subject="推荐-" + "超卖", content=[], attachments=[])
+        daemonize(func=start)
     else:
         if args[0] == "s":
             scan_share(is_test=True)
@@ -16,4 +16,5 @@ if __name__ == "__main__":
             start()
         elif args[0] == "r":
             send_message(subject="推荐-" + "超卖", content=[], attachments=[])
-
+        elif args[0] == "d":
+            daemonize(func=start)
