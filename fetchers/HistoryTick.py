@@ -143,12 +143,6 @@ def scan_tick_data(output=None, is_test=False, is_all=False, params=None, is_sav
     data = dict()
     data["info"] = dict(size=PARAMS_IN_USE["MA"], start=None, end=None, map=name_code_map)
     data["content"] = res
-    if is_save:
-        # 存入数据库
-        conn = MongoConn(config=MONGODB_CONFIG)
-        coll = conn.get_coll("share_tick_coll")
-        coll.insert(data)
-
     with open(ROOT_DIR + "app/output.json", "w", encoding="utf-8") as f:
         json.dump(data, f)
 
@@ -158,6 +152,13 @@ def scan_tick_data(output=None, is_test=False, is_all=False, params=None, is_sav
             data["info"] = dict(size=PARAMS_IN_USE["MA"], start=None, end=None, map=name_code_map)
             data["content"] = res
             json.dump(data, f)
+
+    if is_save:
+        # 存入数据库
+        conn = MongoConn(config=MONGODB_CONFIG)
+        coll = conn.get_coll("share_tick_coll")
+        #todo 经过insert之后data被修改了 加上了objectId
+        coll.insert(data)
     return res
 
 
