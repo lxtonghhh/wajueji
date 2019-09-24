@@ -29,7 +29,7 @@ PLACE = {"上海": "sh", "深圳": "sz"}
 
 
 def load_share_info_from_json():
-    with open("../local/share.json", "r", encoding="utf-8") as f:
+    with open("local/share.json", "r", encoding="utf-8") as f:
         obj = json.load(f)
         return {i["url_name"]: (i["pair_id"], i["name"], i["code"]) for i in obj}
 
