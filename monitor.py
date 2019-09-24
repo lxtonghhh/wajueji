@@ -2,8 +2,8 @@ from mongo import MongoConn, MONGODB_CONFIG
 from datetime import datetime
 import time, sys
 from sender import send_message
-from fetchers.TechIndex import scan
-from utils import time_to_str
+from fetchers.TechIndex import scan_share
+from utils.date import time_to_str
 
 REPORT_TIME = ["6", "8", "10", "12", "14", "16", "17", "18", "19", "20", "22"]
 
@@ -66,7 +66,7 @@ class Monitor(object):
             time.sleep(1)
 
     def get_info(self, is_test):
-        res = scan(is_test)
+        res = scan_share(is_test)
         info = dict(datetime=time_to_str(datetime.now()), content=res)
         info_str = time_to_str(datetime.now()) + "\n" + "\n".join(res)
         print("Monitor 完成扫描", info_str)

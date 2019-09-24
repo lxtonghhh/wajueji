@@ -1,6 +1,10 @@
 import uuid, datetime
 from mongo import MongoConn, MONGODB_CONFIG
 
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36',
+    'Accept': '*/*',
+}
 
 class ExitSignal(Exception):
     def __init__(self):
@@ -31,6 +35,8 @@ class Fetcher(object):
                 # print("Fetcher {0} {1} is Running".format(self.name, self.uuid))
                 self.work()
                 self._beat()
+                if self.on_tick:
+                    self.on_tick()
             except ExitSignal:
                 print("Fetcher {0} {1} is Exiting".format(self.name, self.uuid))
                 return self.result
@@ -44,6 +50,8 @@ class Fetcher(object):
                 # print("Fetcher {0} {1} is Running".format(self.name, self.uuid))
                 self.work()
                 self._beat()
+                if self.on_tick:
+                    self.on_tick()
             except ExitSignal:
                 print("Fetcher {0} {1} is Exiting".format(self.name, self.uuid))
                 return self.result
@@ -57,8 +65,13 @@ class Fetcher(object):
     def exception(self):
         pass
 
+    def on_tick(self):
+        # 每次循坏结束时候调用
+        pass
 
-def create_new_fetcher(fetcher_name, prepare_method, work_method, exception_method):
+
+def create_new_fetcher(fetcher_name, prepare_method, work_method, exception_method, tick_method=None):
     new_fetcher = type(fetcher_name, (Fetcher,),
-                       dict(work=work_method, prepare=prepare_method, exception=exception_method, name=fetcher_name))
+                       dict(work=work_method, prepare=prepare_method, exception=exception_method, name=fetcher_name,
+                            on_tick=tick_method))
     return new_fetcher

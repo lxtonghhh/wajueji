@@ -10,6 +10,10 @@ HEADERS = {
 }
 SHARES = ["sz000651", "sz002023", "sh600183", "sz300456", "sz002174", "sh600886", "sh601069"]
 URL = "https://hq.sinajs.cn/list={0}".format(",".join(SHARES))
+CAPITAL_URL = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/MoneyFlow.ssi_ssfx_flzjtj?daima=sz000651"
+"""
+({r0_in:"263644430.6400",r0_out:"255299397.0500",r0:"567692857.6900",r1_in:"304805084.3100",r1_out:"328266249.5900",r1:"663179712.2700",r2_in:"91615796.2800",r2_out:"110397555.9200",r2:"214621765.9200",r3_in:"12711977.0000",r3_out:"12291624.3600",r3:"26391999.3600",curr_capital:"596992",name:"格力电器",trade:"59.4000",changeratio:"0.00101112",volume:"24697865.0000",turnover:"41.3705",r0x_ratio:"79.8876",netamount:"-33477538.6900"})
+"""
 TICK = 5
 """
 9.3
@@ -45,6 +49,7 @@ sh601919
 sh603636
 sh600171
 """
+
 
 def Share_prepare(self):
     self.conn = MongoConn(config=MONGODB_CONFIG)
