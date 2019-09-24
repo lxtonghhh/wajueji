@@ -35,7 +35,9 @@ def jsonfy(s: str) -> object:
     obj = eval(s, type('js', (dict,), dict(__getitem__=lambda s, n: n))())
     return obj
 if __name__ == "__main__":
-    with open("9_21_86400.json", "r", encoding="utf-8") as f:
+    from constant import ROOT_DIR
+    print(ROOT_DIR)
+    with open(ROOT_DIR+"output/9_24_14_86400.json", "r", encoding="utf-8") as f:
         obj = json.load(f)
         nobj = divide(obj)
         print([share[0] for share in nobj[14]])

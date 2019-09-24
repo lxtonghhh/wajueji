@@ -1,4 +1,4 @@
-import os, time, datetime
+import os, time, datetime,json
 
 if __name__ == "__main__":
     l = [('sh600197', 14.0), ('sh601800', 13.75), ('sz300042', 14.0), ('sh601231', 14.0), ('sh600237', 14.0),
@@ -6,3 +6,6 @@ if __name__ == "__main__":
 
     s = [i[0] for i in l]
     print(s)
+    with open("local/share.json","r",encoding="utf-8") as f:
+        obj=json.load(f)
+        print()

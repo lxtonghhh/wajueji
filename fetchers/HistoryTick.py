@@ -3,6 +3,7 @@
 import requests, json, time, re, demjson, math, random
 from mongo import MongoConn, MONGODB_CONFIG
 from fetcher import create_new_fetcher, ExitSignal, HEADERS
+from constant import ROOT_DIR
 
 MA_DICT = {5: "5", 10: "10", 15: "15", 20: "20", 25: "25", }
 INTERVAL_DICT = {5: "5", 15: "15", 30: "30", 60: "60", }  # 间隔分钟
@@ -18,12 +19,12 @@ HISTORY_URL = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/C
               "symbol={share}&scale={interval}&ma={MA}&datalen={datalen}"
 PARAMS_IN_USE = PARAMS_1_day_by_5m
 
-SHARES_IN_USE = []
+SHARES_IN_USE = ['sz002270', 'sz300207', 'sz300328', 'sz002213', 'sh603505']
 
 PORTFOLIO_LIST_FILE = "portfolio_list.json"
 
 
-def make_portfolio_list(fname=PORTFOLIO_LIST_FILE, share_list=SHARES_IN_USE, is_all=True):
+def make_portfolio_list(fname=PORTFOLIO_LIST_FILE, share_list=SHARES_IN_USE, is_all=False):
     """
     生成组合名单
     :param fname:
@@ -32,7 +33,7 @@ def make_portfolio_list(fname=PORTFOLIO_LIST_FILE, share_list=SHARES_IN_USE, is_
     :return:
     """
     # 本地share代码表
-    with open("../local/share.json", "r", encoding="utf-8", ) as f:
+    with open(ROOT_DIR + "local/share.json", "r", encoding="utf-8", ) as f:
         all_share_dict = json.load(f)
     output = []
     if is_all:
@@ -110,7 +111,12 @@ def Share_exception(self):
         pass
 
 
-def scan_tick_data(is_test=False, is_all=False):
+def scan_tick_data(output=None, is_test=False, is_all=False, params=None, is_save=False):
+    if params:
+        global PARAMS_IN_USE
+        PARAMS_IN_USE = params
+    else:
+        pass
     name_code_map = make_portfolio_list(is_all=is_all)
     newFetcher = create_new_fetcher("TickDataFetcher", Share_prepare, Share_work, Share_exception, Share_on_tick)
     n = newFetcher()
@@ -134,16 +140,23 @@ def scan_tick_data(is_test=False, is_all=False):
             [(share3_open_tick1, high1, low1, close1),(share3_open_tick2, high2, low2, close2),...],
             ]
     """
-    with open("../app/output.json", "w", encoding="utf-8") as f:
+
+    with open(ROOT_DIR + "app/output.json", "w", encoding="utf-8") as f:
         data = dict()
         data["info"] = dict(size=PARAMS_IN_USE["MA"], start=None, end=None, map=name_code_map)
         data["content"] = res
         json.dump(data, f)
 
+    if output:
+        with open(ROOT_DIR + "output/tick_" + output + ".json", "w", encoding="utf-8") as f:
+            data = dict()
+            data["info"] = dict(size=PARAMS_IN_USE["MA"], start=None, end=None, map=name_code_map)
+            data["content"] = res
+            json.dump(data, f)
     return res
 
 
 if __name__ == "__main__":
     print(random.random())
 
-    scan_tick_data(is_test=False, is_all=True)
+    scan_tick_data(output="9_24_14_86400", is_test=False)
