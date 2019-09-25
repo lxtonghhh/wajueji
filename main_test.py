@@ -13,7 +13,14 @@ if __name__ == "__main__":
         if args[0] == "s":
             scan_share(is_test=True)
         elif args[0] == "f":
-            start()
+            params = {}
+            if "t" in args:
+                params["is_test"] = True
+            if "a" in args:
+                params["is_all"] = True
+            if "s" in args:
+                params["is_save"] = True
+            start(**params)
         elif args[0] == "r":
             send_message(subject="推荐-" + "超卖", content=[], attachments=[])
         elif args[0] == "d":

@@ -11,6 +11,6 @@ PARAMS_2_day_by_5m = dict(MA=MA_DICT[5], interval=INTERVAL_DICT[5], datalen=48 *
 PARAMS_1_day_by_5m = dict(MA=MA_DICT[5], interval=INTERVAL_DICT[5], datalen=48 * 1)
 
 
-def start():
+def start(is_test=False, is_all=False, params=PARAMS_10_day_by_15m, is_save=False):
     # 所有股票 15分钟10天tick 存入数据库中
-    scan_tick_data(output=None, is_test=False, is_all=False, params=PARAMS_10_day_by_15m, is_save=False)
+    scan_tick_data(output=None, is_test=is_test, is_all=is_all, params=params, is_save=is_save)
