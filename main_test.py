@@ -32,3 +32,5 @@ if __name__ == "__main__":
             if "s" in args:
                 params["is_save"] = True
             daemonize(func=start, **params)
+        elif args[0] == "dt":
+            daemonize(func=scan_share)

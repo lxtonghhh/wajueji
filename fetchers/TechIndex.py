@@ -7,6 +7,7 @@ from filter import create_new_filter
 from bs4 import BeautifulSoup
 from utils.date import GMT_to_local, get_month, get_day, get_hour, get_minute, get_second, get_year, time_to_str
 from fetchers.pool import SHARE_LIST_ALL, SHARE_LIST_PART
+from constant import ROOT_DIR
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36',
@@ -29,7 +30,7 @@ PLACE = {"上海": "sh", "深圳": "sz"}
 
 
 def load_share_info_from_json():
-    with open("local/share.json", "r", encoding="utf-8") as f:
+    with open(ROOT_DIR + "local/share.json", "r", encoding="utf-8") as f:
         obj = json.load(f)
         return {i["url_name"]: (i["pair_id"], i["name"], i["code"]) for i in obj}
 
@@ -173,7 +174,7 @@ def Share_work(self):
         """
         # 持久化采集结果
         _month, _day, _hour = str(get_month()), str(get_day()), str(get_hour())
-        with open("../output/" + _month + "_" + _day + "_" + _hour + "_" + PERIOD + ".json", "w",
+        with open(ROOT_DIR + "output/" + _month + "_" + _day + "_" + _hour + "_" + PERIOD + ".json", "w",
                   encoding="utf-8") as f:
             json.dump(self.store, f)
 
