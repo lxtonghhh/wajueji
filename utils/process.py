@@ -2,7 +2,7 @@ import os, sys, atexit
 import time
 
 
-def daemonize(func,pid_file=None):
+def daemonize(func, **kwargs):
     """
     创建守护进程 linux only
     :param pid_file: 保存进程id的文件
@@ -40,7 +40,7 @@ def daemonize(func,pid_file=None):
         os.dup2(write_null.fileno(), sys.stdout.fileno())
         os.dup2(write_null.fileno(), sys.stderr.fileno())
 
-    func()
+    func(**kwargs)
     """
     # 写入pid文件
     if pid_file:
@@ -86,6 +86,7 @@ def daemonize(func,pid_file=None):
     守护进程改变了会话、进程组、工作目录和文件描述符，后台进程直接继承父进程（shell）的
         
     """
+
 
 if __name__ == "__main__":
     daemonize(None)
