@@ -5,12 +5,16 @@ def f(name, age):
     print(name, age)
 
 
+def f2():
+    print(1)
+
+
 def wrapper(func, **kwargs):
     func(**kwargs)
 
 
 if __name__ == "__main__":
-    wrapper(func=f, **dict(name="liu", age=21))
+    wrapper(func=f2)
     exit(1)
     l = [('sh600197', 14.0), ('sh601800', 13.75), ('sz300042', 14.0), ('sh601231', 14.0), ('sh600237', 14.0),
          ('sz300365', 13.75), ('sh600557', 13.75), ('sh600720', 14.0), ('sh600516', 14.0)]
