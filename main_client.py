@@ -7,9 +7,10 @@ from fetchers.TechIndex import scan_share
 from task.fetch_share_tick import start
 from utils.process import daemonize
 from sender import send_message
-from utils.common import get_args, get_exception_info, str2bytes,bytes2str
+from utils.common import get_args, get_exception_info, str2bytes, bytes2str
 import time, sys, traceback
 import zmq
+
 
 def prepare(host):
     context = zmq.Context()
@@ -29,16 +30,19 @@ def run_client(host="localhost"):
         print("->即将执行指令", command)
         socket.send(str2bytes(command))
         message = socket.recv()
-        print("->指令执行结果", message)
+        print("->指令执行结果", bytes2str(message))
 
 
-def main():
+def main(host="localhost"):
     args = get_args()
 
     if len(args) == 0:
-        run_client()
+        run_client(host)
     elif args[0] == "d":
         pass
 
+
+TX_HOST = "132.232.62.227"
+HOST_IN_USE = TX_HOST
 if __name__ == "__main__":
-    main()
+    main(host=HOST_IN_USE)

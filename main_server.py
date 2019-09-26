@@ -25,6 +25,13 @@ def run_server():
             if message == "e":
                 socket.send(b"error")
                 raise Exception("错误测试")
+            elif message == "t":
+                send_message(subject="系统状态测试", content=["邮件发送正常"], attachments=[])
+                socket.send(str2bytes(message + " -->finished"))
+            elif message == "s":
+                send_message(subject="系统状态报告", content=["开始扫描"], attachments=[])
+                socket.send(str2bytes(message + " -->start"))
+                scan_share(is_test=False)
             else:
                 send_message(subject="系统状态报告", content=["运行正常"], attachments=[])
                 socket.send(str2bytes(message + " -->finished"))
