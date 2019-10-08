@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from utils.date import GMT_to_local, get_month, get_day, get_hour, get_minute, get_second, get_year, time_to_str
 from fetchers.pool import SHARE_LIST_ALL, SHARE_LIST_PART
 from constant import ROOT_DIR
+from utils.common import get_args, get_exception_info, str2bytes, bytes2str
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36',
@@ -177,6 +178,13 @@ def Share_work(self):
         with open(ROOT_DIR + "output/" + _month + "_" + _day + "_" + _hour + "_" + PERIOD + ".json", "w",
                   encoding="utf-8") as f:
             json.dump(self.store, f)
+
+        try:
+            conn = MongoConn(config=MONGODB_CONFIG)
+            coll = conn.get_coll("tech_index_coll")
+            coll.insert(dict(content=self.store))
+        except Exception as e:
+            send_message(subject="系统错误报告-持久化", content=[get_exception_info(e)], attachments=[])
 
         raise ExitSignal
 
