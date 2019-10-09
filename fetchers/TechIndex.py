@@ -167,7 +167,7 @@ def Share_work(self):
         
         """
         if len(self.pool) > 0:
-            send_message(subject="推荐-" + "超卖", content=self.pool, attachments=[])
+            send_message(subject="推荐-" + "购买指标多", content=self.pool, attachments=[])
         """
         print("######Result:")
         for s in result:

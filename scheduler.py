@@ -3,7 +3,7 @@ from datetime import datetime
 import time, sys
 from sender import send_message
 from utils.date import time_to_str
-from utils.common import get_args, get_exception_info, str2bytes, bytes2str
+from utils.common import get_args, get_exception_info, tuples_to_str_list
 from fetchers.TechIndex import scan_share
 from utils.process import daemonize
 
@@ -70,8 +70,8 @@ class Scheduler(object):
 
     def get_info(self, is_test):
         res = scan_share(is_test)
-        info = dict(datetime=time_to_str(datetime.now()), content=res)
-        info_str = time_to_str(datetime.now()) + "\n" + "\n".join(res)
+
+        info_str = time_to_str(datetime.now()) + "\n" + "\n".join(tuples_to_str_list(res))
         return info_str
 
     def report(self, is_test=False):
